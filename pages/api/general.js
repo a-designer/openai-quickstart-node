@@ -9,18 +9,15 @@ export default async function (req, res) {
   const completion = await openai.createCompletion({
     model: "text-davinci-003",
     prompt: generatePrompt(req.body.phrase),
-    temperature: 0.6,
+    temperature: 0.7,
+    max_tokens: 256,
+    top_p: 1,
+    frequency_penalty: 0,
+    presence_penalty: 0,
   });
   res.status(200).json({ result: completion.data.choices[0].text });
 }
 
 function generatePrompt(phrase) {
-  const capitalizedPhrase =
-    phrase[0].toUpperCase() + phrase.slice(1).toLowerCase();
-  return `transform the phrase into emojis
-
-I love apples: ❤️🍎
-Dog walks in a park : 🐶🚶🏞️
-Party had great music : 🎉 🎼🎧️ ❤️
-${capitalizedPhrase} :`;
+  return `${phrase}`;
 }
