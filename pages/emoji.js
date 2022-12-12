@@ -41,7 +41,7 @@ export default function Home() {
             value={phraseInput}
             onChange={(e) => setPhraseInput(e.target.value)}
           />
-          <input type="submit" value={isLoading ? 'Loading...' : 'Generate Emoji translation'} />
+          <input type="submit" value={isLoading ? 'Loading...' : 'Generate emoji translation'} />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
