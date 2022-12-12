@@ -5,9 +5,11 @@ import styles from "./index.module.css";
 export default function Home() {
   const [phraseInput, setPhraseInput] = useState("");
   const [result, setResult] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     const response = await fetch("/api/generateemoji", {
       method: "POST",
       headers: {
@@ -16,6 +18,7 @@ export default function Home() {
       body: JSON.stringify({ phrase: phraseInput }),
     });
     const data = await response.json();
+    setIsLoading(false);
     setResult(data.result);
     setPhraseInput("");
   }
@@ -38,7 +41,7 @@ export default function Home() {
             value={phraseInput}
             onChange={(e) => setPhraseInput(e.target.value)}
           />
-          <input type="submit" value="Generate Emoji translation" />
+          <input type="submit" value={isLoading ? 'Loading...' : 'Generate Emoji translation'} />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
