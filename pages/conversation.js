@@ -21,7 +21,7 @@ export default function Home() {
     const data = await response.json();
     setIsLoading(false);
     setResult(data.result);
-    setIdInput(data.id);
+    setPhraseInput(phraseInput + '\nA:' + data.result + '\nQ:')
     //setPhraseInput("");
   }
 
@@ -34,10 +34,10 @@ export default function Home() {
 
       <main className={styles.main}>
         <h2 className={styles.icon}>🤔❓🤖</h2>
-        <h3>Ask robots anything</h3>
+        <h3>Have a conversation</h3>
         <form onSubmit={onSubmit}>
-          <textarea
-              cols={40}
+          <textarea rows={8}
+                    cols={100}
 
             name="phrase"
             placeholder="Enter a prompt"
