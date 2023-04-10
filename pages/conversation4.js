@@ -4,7 +4,8 @@ import styles from "./index.module.css";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
-  const [conversation, setConversation] = useState([{ role: "system", content: "You are a helpful assistant." }]);
+  const [systemMessage, setSystemMessage] = useState("You are a helpful assistant.");
+  const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(event) {
@@ -16,7 +17,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ messages: newConversation }),
+      body: JSON.stringify({ messages: [{ role: "system", content: systemMessage }, ...newConversation] }),
     });
     const data = await response.json();
     setIsLoading(false);
@@ -33,7 +34,11 @@ export default function Home() {
 
         <main className={styles.main}>
           <h2 className={styles.icon}>🤔❓🤖</h2>
-          <h3>Have a conversation</h3>
+          <textarea
+              className={styles.systemMessage}
+              value={systemMessage}
+              onChange={(e) => setSystemMessage(e.target.value)}
+          />
           <div className={styles.conversationWindow}>
             {conversation.map((msg, index) => (
                 <p key={index}>
@@ -41,21 +46,22 @@ export default function Home() {
                 </p>
             ))}
           </div>
-          <form onSubmit={onSubmit}>
-            <input
-                type="text"
-                name="userInput"
-                placeholder="Enter a message"
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-            />
+          <form onSubmit={onSubmit} className={styles.form}>
+          <textarea
+              rows="3"
+              name="userInput"
+              placeholder="Enter a message"
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              className={styles.messageInput}
+          />
             <input
                 type="submit"
                 value={isLoading ? "Loading..." : "Send message"}
+                className={styles.submitButton}
             />
           </form>
         </main>
       </div>
   );
 }
-

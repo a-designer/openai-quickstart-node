@@ -39,7 +39,7 @@
 .main form {
   display: flex;
   flex-direction: column;
-  width: auto;
+  width: 100%;
 }
 .main input[type="text"] {
   padding: 12px 16px;
@@ -53,7 +53,7 @@
   border: 1px solid #094875;
   border-radius: 4px;
   margin-bottom: 24px;
-  height: 20vh;
+
 }
 
 .main ::placeholder {
@@ -82,11 +82,46 @@
   margin-top: 40px;
 }
 
+
+
+.main {
+  max-width: 2000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+}
+
+.icon {
+  font-size: 3rem;
+}
+
+
+.systemMessage,
+.messageInput {
+  width: 100%;
+  max-width: 100%;
+
+  resize: vertical;
+
+  box-sizing: border-box;
+}
+.systemMessage {
+  height: 3rem;
+}
+
 .conversationWindow {
+  max-width: 100%;
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 1rem;
+  margin: 1rem;
+  box-sizing: border-box;
+  text-align: left;
   overflow-y: auto;
-  max-height: 400px; /* Adjust this value to change the conversation window height */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  margin-bottom: 16px;
+  height: 300px;
+}
+
+.submitButton {
+  display: inline-block;
+  margin-top: 1rem;
 }
