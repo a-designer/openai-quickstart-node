@@ -6,12 +6,22 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
-
   const messages = req.body.messages;
+  const model = req.body.model;
+
+  let openaiModel;
+  if (model === 1) {
+    openaiModel = "gpt-3.5-turbo";
+  } else if (model === 2) {
+    openaiModel = "gpt-4";
+  } else {
+    res.status(400).json({ error: "Invalid model value" });
+    return;
+  }
 
   try {
     const completion = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: openaiModel,
       temperature: 0.7,
       max_tokens: 2000,
       messages: messages,

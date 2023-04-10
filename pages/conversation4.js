@@ -7,6 +7,7 @@ export default function Home() {
   const [systemMessage, setSystemMessage] = useState("You are a helpful assistant.");
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [extraSmart, setExtraSmart] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -17,12 +18,31 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ messages: [{ role: "system", content: systemMessage }, ...newConversation] }),
+      body: JSON.stringify({
+        messages: [{ role: "system", content: systemMessage }, ...newConversation],
+        model: extraSmart ? 2 : 1,
+      }),
     });
     const data = await response.json();
     setIsLoading(false);
     setConversation([...newConversation, { role: "assistant", content: data.result }]);
     setUserInput("");
+  }
+
+  async function saveConversation() {
+    await fetch("/api/save-conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(conversation),
+    });
+  }
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter" && event.metaKey) {
+      onSubmit(event);
+    }
   }
 
   return (
@@ -53,6 +73,7 @@ export default function Home() {
               placeholder="Enter a message"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
+              onKeyPress={handleKeyPress}
               className={styles.messageInput}
           />
             <input
@@ -60,7 +81,19 @@ export default function Home() {
                 value={isLoading ? "Loading..." : "Send message"}
                 className={styles.submitButton}
             />
+            <label htmlFor="extraSmart" className={styles.extraSmartLabel}>
+              <input
+                  type="checkbox"
+                  id="extraSmart"
+                  checked={extraSmart}
+                  onChange={() => setExtraSmart(!extraSmart)}
+              />
+              Extra Smart
+            </label>
           </form>
+          <button onClick={saveConversation} className={styles.saveButton}>
+            Save conversation
+          </button>
         </main>
       </div>
   );
